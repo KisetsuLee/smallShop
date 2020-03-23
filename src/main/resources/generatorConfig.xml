@@ -10,26 +10,25 @@
                         userId="root"
                         password="123456">
         </jdbcConnection>
-
         <javaModelGenerator targetPackage="com.lee.weichatmall.domain" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
-            <property name="trimStrings" value="true" />
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="db.mybatis"  targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true" />
+        <sqlMapGenerator targetPackage="db.mybatis" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.lee.weichatmall.dao.mapper"  targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.lee.weichatmall.dao.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user" domainObjectName="User" >
+        <table tableName="user" domainObjectName="User">
             <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="ID" sqlStatement="mysql" identity="true" />
-            <columnOverride column="AVATAR_URL" property="avatarUrl" />
-            <columnOverride column="CREATE_AT" property="createAt" />
-            <columnOverride column="MODIFIED_AT" property="modifiedAt" />
+            <generatedKey column="ID" sqlStatement="mysql" identity="true"/>
+            <columnOverride column="AVATAR_URL" property="avatarUrl"/>
+            <columnOverride column="CREATE_AT" property="createAt"/>
+            <columnOverride column="MODIFIED_AT" property="modifiedAt"/>
         </table>
 
     </context>
