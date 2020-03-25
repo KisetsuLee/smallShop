@@ -1,7 +1,6 @@
 package com.lee.weichatmall.config;
 
 import com.lee.weichatmall.domain.auth.ShiroRealm;
-import com.lee.weichatmall.service.VerificationCodeCheckService;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -33,10 +32,10 @@ public class ShiroConfig {
 
     @Bean
     public SecurityManager securityManager(ShiroRealm shiroRealm) {
-        DefaultWebSecurityManager webSecurityManager = new DefaultWebSecurityManager();
-        webSecurityManager.setRealm(shiroRealm);
-        webSecurityManager.setCacheManager(new MemoryConstrainedCacheManager());
-        webSecurityManager.setSessionManager(new DefaultWebSessionManager());
-        return webSecurityManager;
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(shiroRealm);
+        securityManager.setCacheManager(new MemoryConstrainedCacheManager());
+        securityManager.setSessionManager(new DefaultWebSessionManager());
+        return securityManager;
     }
 }

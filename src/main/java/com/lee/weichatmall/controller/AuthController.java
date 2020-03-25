@@ -2,12 +2,17 @@ package com.lee.weichatmall.controller;
 
 import com.lee.weichatmall.domain.user.TelAndCode;
 import com.lee.weichatmall.service.AuthService;
+import com.lee.weichatmall.service.TelVerifyService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Description:
@@ -19,15 +24,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class AuthController {
     private final AuthService authService;
+    private final TelVerifyService telVerifyService;
 
-    public AuthController(AuthService authService) {
+    @Autowired
+    public AuthController(AuthService authService, TelVerifyService telVerifyService) {
         this.authService = authService;
+        this.telVerifyService = telVerifyService;
     }
 
     @PostMapping("code")
-    public String code(@RequestBody TelAndCode telAndCode) {
-        authService.sendVerificationCode(telAndCode.getTel());
-        return "发送成功，请输入正确的验证码进行验证";
+    public void code(@RequestBody TelAndCode telAndCode, HttpServletResponse response) {
+        if (telVerifyService.verifyTelParam(telAndCode)) {
+            authService.sendVerificationCode(telAndCode.getTel());
+        } else {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
     }
 
     @PostMapping("login")
