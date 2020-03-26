@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 class TelVerifyServiceImplTest {
     public static TelAndCode VALID_TEL = new TelAndCode("12311122345", null);
     public static TelAndCode INVALID_TEL = new TelAndCode("1231112235", null);
-    public static TelAndCode INVALID_TEL_CODE = new TelAndCode("1231112235", "000000");
+    public static TelAndCode VALID_TEL_CODE = new TelAndCode("12311122345", "000000");
 
     @Test
     public void returnTrueIfValid() {

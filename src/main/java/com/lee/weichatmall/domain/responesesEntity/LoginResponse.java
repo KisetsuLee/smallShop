@@ -17,6 +17,14 @@ public class LoginResponse {
         this.user = user;
     }
 
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     public static LoginResponse loginResponse(User user) {
         return new LoginResponse(true, user);
     }
