@@ -4,7 +4,6 @@ import com.lee.weichatmall.domain.User;
 import com.lee.weichatmall.service.UserContext;
 import com.lee.weichatmall.service.UserService;
 import org.apache.shiro.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
