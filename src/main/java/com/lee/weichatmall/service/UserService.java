@@ -10,4 +10,6 @@ import com.lee.weichatmall.domain.User;
  */
 public interface UserService {
     User createUserIfNotExist(String tel);
+
+    User getUserByTel(String tel);
 }
