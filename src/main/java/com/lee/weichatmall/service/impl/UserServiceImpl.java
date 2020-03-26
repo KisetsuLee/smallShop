@@ -33,4 +33,9 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
+
+    @Override
+    public User getUserByTel(String tel) {
+        return userDao.getUserByTel(tel);
+    }
 }
