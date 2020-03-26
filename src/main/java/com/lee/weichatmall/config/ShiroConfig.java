@@ -3,6 +3,7 @@ package com.lee.weichatmall.config;
 import com.lee.weichatmall.config.interceptor.UserLoginInterceptor;
 import com.lee.weichatmall.domain.auth.ShiroRealm;
 import com.lee.weichatmall.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -54,6 +55,7 @@ public class ShiroConfig implements WebMvcConfigurer {
         securityManager.setRealm(shiroRealm);
         securityManager.setCacheManager(new MemoryConstrainedCacheManager());
         securityManager.setSessionManager(new DefaultWebSessionManager());
+        SecurityUtils.setSecurityManager(securityManager);
         return securityManager;
     }
 }

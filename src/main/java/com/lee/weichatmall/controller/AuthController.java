@@ -48,11 +48,17 @@ public class AuthController {
         return "登录成功，手机号为" + telAndCode.getTel();
     }
 
+    @PostMapping("logout")
+    public void logout() {
+        SecurityUtils.getSubject().logout();
+    }
+
     @GetMapping("status")
     public Object loginStatus() {
         if (UserContext.getCurrentUser() == null) {
             return LoginResponse.notLoginResponse();
+        } else {
+            return LoginResponse.loginResponse(UserContext.getCurrentUser());
         }
-        return LoginResponse.loginResponse(UserContext.getCurrentUser());
     }
 }

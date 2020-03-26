@@ -47,30 +47,44 @@ public class AuthIntegrationTest {
                 .acceptJson()
                 .body();
         final HashMap statusResponse = JSON.parseObject(body, HashMap.class);
-        Assertions.assertFalse((Boolean) statusResponse.get("isLogin"));
+        Assertions.assertFalse((Boolean) statusResponse.get("login"));
         // send sms and get code, access /api/login, return set-cookie
-        final String codeResponse = HttpRequest.post(getUrl("/api/code"))
+        final int code = HttpRequest.post(getUrl("/api/code"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .acceptJson()
                 .send(mapper.writeValueAsString(TelVerifyServiceImplTest.VALID_TEL))
-                .body();
-        HashMap code = JSON.parseObject(codeResponse, HashMap.class);
-        Assertions.assertEquals("000000", code.get("code"));
+                .code();
+        Assertions.assertEquals(HTTP_OK, code);
 
         final Map<String, List<String>> headers = HttpRequest.post(getUrl("/api/login"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .acceptJson()
-                .send(mapper.writeValueAsString(TelVerifyServiceImplTest.INVALID_TEL_CODE))
+                .send(mapper.writeValueAsString(TelVerifyServiceImplTest.VALID_TEL_CODE))
                 .headers();
-        Assertions.assertNotNull(headers.get("set-cookie"));
+        final List<String> setCookies = headers.get("Set-Cookie");
+        Assertions.assertNotNull(setCookies);
         // access /api/status with cookie, return true and user information
+        String jSessionId = setCookies.stream()
+                .filter(cookie -> cookie.contains("JSESSIONID"))
+                .findFirst().get();
         final String body2 = HttpRequest.get(getUrl("/api/status"))
+                .header("Cookie", jSessionId)
                 .acceptJson()
                 .body();
         final HashMap statusResponse2 = JSON.parseObject(body2, HashMap.class);
-        Assertions.assertTrue((Boolean) statusResponse2.get("isLogin"));
+        Assertions.assertTrue((Boolean) statusResponse2.get("login"));
+
         // access /api/logout
+        final String body3 = HttpRequest.get(getUrl("/api/logout"))
+                .header("Cookie", jSessionId)
+                .acceptJson()
+                .body();
         // access /api/status again, return false
+        final String body4 = HttpRequest.get(getUrl("/api/status"))
+                .acceptJson()
+                .body();
+        final HashMap statusResponse3 = JSON.parseObject(body, HashMap.class);
+        Assertions.assertFalse((Boolean) statusResponse3.get("login"));
     }
 
     @Test
