@@ -3,21 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <!--    <environments default="development">-->
-    <!--        <environment id="development">-->
-    <!--            <transactionManager type="JDBC"/>-->
-    <!--            <dataSource type="POOLED">-->
-    <!--                <property name="driver" value="${driver}"/>-->
-    <!--                <property name="url" value="${url}"/>-->
-    <!--                <property name="username" value="${username}"/>-->
-    <!--                <property name="password" value="${password}"/>-->
-    <!--            </dataSource>-->
-    <!--        </environment>-->
-    <!--    </environments>-->
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
     <mappers>
         <mapper resource="db/mybatis/UserMapper.xml"/>
+        <mapper resource="db/mybatis/GoodsMapper.xml"/>
+        <mapper resource="db/mybatis/OrderMapper.xml"/>
+        <mapper resource="db/mybatis/ShopMapper.xml"/>
+        <mapper resource="db/mybatis/ShoppingCartMapper.xml"/>
     </mappers>
 </configuration>

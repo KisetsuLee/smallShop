@@ -32,7 +32,6 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             User user = userService.getUserByTel(tel.toString());
             UserContext.setCurrentUser(user);
         }
-        System.out.println("preHandle");
         return true;
     }
 
@@ -40,6 +39,5 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            @Nullable ModelAndView modelAndView) throws Exception {
         UserContext.setCurrentUser(null);
-        System.out.println("postHandle");
     }
 }
