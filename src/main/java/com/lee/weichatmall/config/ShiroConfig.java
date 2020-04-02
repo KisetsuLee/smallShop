@@ -52,10 +52,10 @@ public class ShiroConfig implements WebMvcConfigurer {
     @Bean
     public SecurityManager securityManager(ShiroRealm shiroRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(shiroRealm);
+        securityManager.setRealm(shiroRealm); // 配置realm规则
         securityManager.setCacheManager(new MemoryConstrainedCacheManager());
         securityManager.setSessionManager(new DefaultWebSessionManager());
-        SecurityUtils.setSecurityManager(securityManager);
+        SecurityUtils.setSecurityManager(securityManager); // 配置securityManager
         return securityManager;
     }
 }

@@ -16,6 +16,10 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <my.mysql.driver>com.mysql.cj.jdbc.Driver</my.mysql.driver>
+        <my.mysql.username>root</my.mysql.username>
+        <my.mysql.password>123456</my.mysql.password>
+        <my.mysql.url>jdbc:mysql://172.16.14.195:3306/weiShop?characterEncoding=utf-8</my.mysql.url>
     </properties>
 
     <dependencies>
@@ -97,10 +101,10 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>6.3.1</version>
                 <configuration>
-                    <driver>com.mysql.cj.jdbc.Driver</driver>
-                    <url>jdbc:mysql://172.16.15.17/weiShop?characterEncoding=utf-8</url>
-                    <user>root</user>
-                    <password>123456</password>
+                    <driver>${my.mysql.driver}</driver>
+                    <url>${my.mysql.url}</url>
+                    <user>${my.mysql.username}</user>
+                    <password>${my.mysql.password}</password>
                 </configuration>
             </plugin>
             <plugin>
@@ -207,6 +211,15 @@
                 </executions>
             </plugin>
         </plugins>
+        <filters>
+            <filter>pom-filter.properties</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources/</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
     <!--    <reporting>-->
