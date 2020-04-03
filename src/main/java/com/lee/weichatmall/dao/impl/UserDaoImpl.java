@@ -37,7 +37,7 @@ public class UserDaoImpl implements UserDao {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
             UserMapper mapper = session.getMapper(UserMapper.class);
             UserExample userExample = new UserExample();
-            userExample.createCriteria().andPhoneEqualTo(tel);
+            userExample.createCriteria().andTelEqualTo(tel);
             return mapper.selectByExample(userExample).get(0);
         }
     }

@@ -1,5 +1,6 @@
 package com.lee.weichatmall.config;
 
+import com.lee.weichatmall.config.filter.ShiroLoginFilter;
 import com.lee.weichatmall.config.interceptor.UserLoginInterceptor;
 import com.lee.weichatmall.domain.auth.ShiroRealm;
 import com.lee.weichatmall.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.servlet.Filter;
 import java.util.HashMap;
 
 /**
@@ -39,13 +41,20 @@ public class ShiroConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, ShiroLoginFilter shiroLoginFilter) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         HashMap<String, String> pattern = new HashMap<>();
-        pattern.put("/code", "anon");
-        pattern.put("/login", "anon");
+        pattern.put("/api/code", "anon");
+        pattern.put("/api/login", "anon");
+        pattern.put("/api/status", "anon");
+        pattern.put("/api/logout", "anon");
+        pattern.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(pattern);
+
+        HashMap<String, Filter> filterMap = new HashMap<>();
+        filterMap.put("unLoginFilter", shiroLoginFilter);
+        shiroFilterFactoryBean.setFilters(filterMap);
         return shiroFilterFactoryBean;
     }
 

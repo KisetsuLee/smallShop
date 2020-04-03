@@ -12,7 +12,7 @@ public class Response<T> {
         return new Response<T>(null, data);
     }
 
-    public Response(String message, T data) {
+    private Response(String message, T data) {
         this.message = message;
         this.data = data;
     }

@@ -6,6 +6,7 @@ import com.lee.weichatmall.domain.Goods;
 import com.lee.weichatmall.domain.Shop;
 import com.lee.weichatmall.service.GoodsService;
 import com.lee.weichatmall.service.UserContext;
+import com.lee.weichatmall.service.exception.goodsService.GoodsInfoWrongForShopException;
 import com.lee.weichatmall.service.exception.goodsService.NotAuthorizedForShopException;
 import org.springframework.stereotype.Service;
 
@@ -23,22 +24,37 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Goods createGoods(Goods goods) {
-        Shop shop = shopDao.findShopById(goods.getShopId());
-
-        if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
-            return goodsDao.insertGoods(goods);
-        } else {
-            throw new NotAuthorizedForShopException("无权访问！");
-        }
+        Shop shop = checkGoodsInCorrectShop(goods.getShopId());
+        isUserHasAuthorizedForGoods(shop.getOwnerUserId());
+        return goodsDao.insertGoods(goods);
     }
 
     @Override
     public Goods deleteGoodsById(Long goodsId) {
-        Shop shop = shopDao.findShopById(goodsId);
+        Goods goods = goodsDao.findGoodsById(goodsId);
+        Shop shop = checkGoodsInCorrectShop(goods.getShopId());
+        isUserHasAuthorizedForGoods(shop.getOwnerUserId());
+        return goodsDao.deleteGoodsById(goodsId);
+    }
 
-        if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
-            return goodsDao.deleteGoodsById(goodsId);
-        } else {
+    @Override
+    public Goods updateGoodsById(Long goodsId, Goods newGoods) {
+        Goods goods = goodsDao.findGoodsById(goodsId);
+        Shop shop = checkGoodsInCorrectShop(goods.getShopId());
+        isUserHasAuthorizedForGoods(shop.getOwnerUserId());
+        return goodsDao.updateGoods(goodsId, newGoods);
+    }
+
+    private Shop checkGoodsInCorrectShop(Long shopId) {
+        Shop shop = shopDao.findShopById(shopId);
+        if (shop == null) {
+            throw new GoodsInfoWrongForShopException("商品信息有误！");
+        }
+        return shop;
+    }
+
+    private void isUserHasAuthorizedForGoods(Long ownerUserId) {
+        if (!Objects.equals(ownerUserId, UserContext.getCurrentUser().getId())) {
             throw new NotAuthorizedForShopException("无权访问！");
         }
     }

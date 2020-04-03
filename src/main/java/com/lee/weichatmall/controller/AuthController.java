@@ -97,14 +97,14 @@ public class AuthController {
      */
     /**
      * @param telAndCode 手机号
-     * @return 一个提示信息
      */
     @PostMapping("login")
-    public String login(@RequestBody TelAndCode telAndCode) {
+    public void login(@RequestBody TelAndCode telAndCode) {
         UsernamePasswordToken token = new UsernamePasswordToken(
                 telAndCode.getTel(), telAndCode.getCode());
+        token.setRememberMe(true);
+
         SecurityUtils.getSubject().login(token);
-        return "登录成功，手机号为" + telAndCode.getTel();
     }
 
     /**
