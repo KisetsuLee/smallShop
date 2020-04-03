@@ -19,8 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
-import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.*;
 
 /**
  * Description:
@@ -85,6 +84,15 @@ public class AuthIntegrationTest {
                 .body();
         final HashMap statusResponse3 = JSON.parseObject(body, HashMap.class);
         Assertions.assertFalse((Boolean) statusResponse3.get("login"));
+    }
+
+    @Test
+    public void returnUnAuthenticationIfNotLogin() {
+        int code = HttpRequest.post(getUrl("/api/any"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .acceptJson()
+                .code();
+        Assertions.assertEquals(HTTP_UNAUTHORIZED, code);
     }
 
     @Test

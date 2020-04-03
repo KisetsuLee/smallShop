@@ -4,6 +4,7 @@ import com.lee.weichatmall.domain.Goods;
 import com.lee.weichatmall.domain.responesesEntity.Response;
 import com.lee.weichatmall.service.GoodsService;
 import com.lee.weichatmall.service.exception.goodsDao.ResourceNotFoundException;
+import com.lee.weichatmall.service.exception.goodsService.GoodsInfoWrongForShopException;
 import com.lee.weichatmall.service.exception.goodsService.NotAuthorizedForShopException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class GoodsController {
     private final GoodsService goodsService;
 
@@ -136,6 +137,9 @@ public class GoodsController {
         } catch (NotAuthorizedForShopException e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return Response.of(e.getMessage(), null);
+        } catch (GoodsInfoWrongForShopException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return Response.of(e.getMessage(), null);
         }
     }
 
@@ -148,6 +152,10 @@ public class GoodsController {
     // @formatter:off
 
     /**
+     * @param goodsId  the goods id to be deleted
+     * @param goods    the goods new info
+     * @param response the HTTP response
+     * @return response info
      * @api {patch} /goods/:id 更新商品
      * @apiName UpdateGoods
      * @apiGroup 商品
@@ -190,7 +198,23 @@ public class GoodsController {
      * }
      */
     // @formatter:on
-    public void updateGoods() {
+    @PostMapping("goods/{id}")
+    public Response<Goods> updateGoods(@PathVariable("id") Long goodsId, @RequestBody Goods goods, HttpServletResponse response) {
+        clean(goods);
+        response.setStatus(HttpServletResponse.SC_OK);
+        try {
+            Goods updateGoods = goodsService.updateGoodsById(goodsId, goods);
+            return Response.of(updateGoods);
+        } catch (ResourceNotFoundException e) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return Response.of(e.getMessage(), null);
+        } catch (NotAuthorizedForShopException e) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return Response.of(e.getMessage(), null);
+        } catch (GoodsInfoWrongForShopException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return Response.of(e.getMessage(), null);
+        }
     }
 
     // @formatter:off

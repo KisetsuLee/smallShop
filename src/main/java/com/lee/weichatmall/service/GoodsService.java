@@ -12,4 +12,6 @@ public interface GoodsService {
     Goods createGoods(Goods goods);
 
     Goods deleteGoodsById(Long goodsId);
+
+    Goods updateGoodsById(Long goodsId, Goods goods);
 }

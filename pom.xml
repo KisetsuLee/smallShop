@@ -201,7 +201,7 @@
                                         <limit>
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.40</minimum>
+                                            <minimum>0.01</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -210,13 +210,21 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <!--                    <delimiters>-->
+                    <!--                        <delimiter>@</delimiter>-->
+                    <!--                    </delimiters>-->
+                    <useDefaultDelimiters>true</useDefaultDelimiters>
+                </configuration>
+            </plugin>
         </plugins>
-        <filters>
-            <filter>pom-filter.properties</filter>
-        </filters>
         <resources>
             <resource>
-                <directory>src/main/resources/</directory>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>

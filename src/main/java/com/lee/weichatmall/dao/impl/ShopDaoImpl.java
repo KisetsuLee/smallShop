@@ -1,6 +1,7 @@
 package com.lee.weichatmall.dao.impl;
 
 import com.lee.weichatmall.dao.ShopDao;
+import com.lee.weichatmall.dao.mapper.ShopMapper;
 import com.lee.weichatmall.domain.Shop;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +13,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ShopDaoImpl implements ShopDao {
+    private ShopMapper shopMapper;
+
+    public ShopDaoImpl(ShopMapper shopMapper) {
+        this.shopMapper = shopMapper;
+    }
+
     @Override
     public Shop findShopById(Long shopId) {
-        return null;
+        return shopMapper.selectByPrimaryKey(shopId);
     }
 }

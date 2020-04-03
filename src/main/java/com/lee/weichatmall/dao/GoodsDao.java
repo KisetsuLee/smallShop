@@ -12,4 +12,8 @@ public interface GoodsDao {
     Goods insertGoods(Goods goods);
 
     Goods deleteGoodsById(Long goodsId);
+
+    Goods updateGoods(Long goodsId, Goods newGoods);
+
+    Goods findGoodsById(Long goodsId);
 }
