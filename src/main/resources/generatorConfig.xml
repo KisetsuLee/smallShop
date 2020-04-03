@@ -5,12 +5,13 @@
 
 <generatorConfiguration>
     <context id="MyDB" targetRuntime="MyBatis3">
-        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://172.16.15.17:3306/weiShop?characterEncoding=utf-8"
-                        userId="root"
-                        password="123456">
+        <jdbcConnection driverClass="${my.mysql.driver}"
+                        connectionURL="${my.mysql.url}"
+                        userId="${my.mysql.username}"
+                        password="${my.mysql.password}">
             <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
+
         <javaModelGenerator targetPackage="com.lee.weichatmall.domain" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -24,13 +25,29 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user" domainObjectName="User">
+        <table schema="weiShop" tableName="USER" domainObjectName="User">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="mysql" identity="true"/>
-            <columnOverride column="avatar_url" property="avatarUrl"/>
-            <columnOverride column="create_at" property="createAt"/>
-            <columnOverride column="modified_at" property="modifiedAt"/>
         </table>
 
+        <table schema="weiShop" tableName="SHOP" domainObjectName="Shop">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+        </table>
+
+        <table schema="weiShop" tableName="GOODS" domainObjectName="Goods">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+        </table>
+
+        <table schema="weiShop" tableName="ORDER" domainObjectName="Order">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+        </table>
+
+        <table schema="weiShop" tableName="SHOPPING_CART" domainObjectName="ShoppingCart">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>

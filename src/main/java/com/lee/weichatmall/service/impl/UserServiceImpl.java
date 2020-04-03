@@ -25,12 +25,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUserIfNotExist(String tel) {
         User user = new User();
-        user.setPhone(tel);
+        user.setTel(tel);
         try {
             userDao.insertUser(user);
         } catch (PersistenceException e) {
             return userDao.getUserByTel(tel);
         }
         return user;
+    }
+
+    @Override
+    public User getUserByTel(String tel) {
+        return userDao.getUserByTel(tel);
     }
 }
