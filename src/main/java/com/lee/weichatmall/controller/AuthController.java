@@ -169,18 +169,4 @@ public class AuthController {
             return LoginResponse.loginResponse(UserContext.getCurrentUser());
         }
     }
-
-    @PostMapping("logout")
-    public void logout() {
-        SecurityUtils.getSubject().logout();
-    }
-
-    @GetMapping("status")
-    public Object loginStatus() {
-        if (UserContext.getCurrentUser() == null) {
-            return LoginResponse.notLoginResponse();
-        } else {
-            return LoginResponse.loginResponse(UserContext.getCurrentUser());
-        }
-    }
 }

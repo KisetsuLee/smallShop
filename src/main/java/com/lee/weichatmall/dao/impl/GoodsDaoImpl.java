@@ -24,8 +24,7 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public Goods insertGoods(Goods goods) {
-        long insert = goodsMapper.insert(goods);
-        goods.setId(insert);
+        goodsMapper.insert(goods);
         return goods;
     }
 

@@ -25,8 +25,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         Object tel = SecurityUtils.getSubject().getPrincipal();
         if (tel != null) {
             User user = userService.getUserByTel(tel.toString());
@@ -37,7 +36,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-                           @Nullable ModelAndView modelAndView) throws Exception {
+                           @Nullable ModelAndView modelAndView) {
         UserContext.setCurrentUser(null);
     }
 }

@@ -30,7 +30,7 @@ import static java.net.HttpURLConnection.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = WeichatmallApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:application.yml")
-public class AuthIntegrationTest {
+class AuthIntegrationTest {
     @Autowired
     Environment environment;
     private ObjectMapper mapper = new ObjectMapper();
@@ -40,54 +40,55 @@ public class AuthIntegrationTest {
     }
 
     @Test
-    public void registerAndLoginAndLogoutTest() throws JsonProcessingException {
+    void registerAndLoginAndLogoutTest() throws JsonProcessingException {
         // not login, access /api/status return false
-        final String body = HttpRequest.get(getUrl("/api/status"))
+        String body = HttpRequest.get(getUrl("/api/status"))
                 .acceptJson()
                 .body();
-        final HashMap statusResponse = JSON.parseObject(body, HashMap.class);
+        HashMap statusResponse = JSON.parseObject(body, HashMap.class);
         Assertions.assertFalse((Boolean) statusResponse.get("login"));
         // send sms and get code, access /api/login, return set-cookie
-        final int code = HttpRequest.post(getUrl("/api/code"))
+        int code = HttpRequest.post(getUrl("/api/code"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .acceptJson()
                 .send(mapper.writeValueAsString(TelVerifyServiceImplTest.VALID_TEL))
                 .code();
         Assertions.assertEquals(HTTP_OK, code);
 
-        final Map<String, List<String>> headers = HttpRequest.post(getUrl("/api/login"))
+        Map<String, List<String>> headers = HttpRequest.post(getUrl("/api/login"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .acceptJson()
                 .send(mapper.writeValueAsString(TelVerifyServiceImplTest.VALID_TEL_CODE))
                 .headers();
-        final List<String> setCookies = headers.get("Set-Cookie");
+        List<String> setCookies = headers.get("Set-Cookie");
         Assertions.assertNotNull(setCookies);
         // access /api/status with cookie, return true and user information
         String jSessionId = setCookies.stream()
                 .filter(cookie -> cookie.contains("JSESSIONID"))
                 .findFirst().get();
-        final String body2 = HttpRequest.get(getUrl("/api/status"))
+        String body2 = HttpRequest.get(getUrl("/api/status"))
                 .header("Cookie", jSessionId)
                 .acceptJson()
                 .body();
-        final HashMap statusResponse2 = JSON.parseObject(body2, HashMap.class);
+        HashMap statusResponse2 = JSON.parseObject(body2, HashMap.class);
         Assertions.assertTrue((Boolean) statusResponse2.get("login"));
 
         // access /api/logout
-        final String body3 = HttpRequest.get(getUrl("/api/logout"))
+        String body3 = HttpRequest.get(getUrl("/api/logout"))
                 .header("Cookie", jSessionId)
                 .acceptJson()
                 .body();
+
         // access /api/status again, return false
-        final String body4 = HttpRequest.get(getUrl("/api/status"))
+        String body4 = HttpRequest.get(getUrl("/api/status"))
                 .acceptJson()
                 .body();
-        final HashMap statusResponse3 = JSON.parseObject(body, HashMap.class);
+        HashMap statusResponse3 = JSON.parseObject(body, HashMap.class);
         Assertions.assertFalse((Boolean) statusResponse3.get("login"));
     }
 
     @Test
-    public void returnUnAuthenticationIfNotLogin() {
+    void returnUnAuthenticationIfNotLogin() {
         int code = HttpRequest.post(getUrl("/api/any"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .acceptJson()
@@ -96,8 +97,8 @@ public class AuthIntegrationTest {
     }
 
     @Test
-    public void httpSuccessTest() throws JsonProcessingException {
-        final int code = HttpRequest.post(getUrl("/api/code"))
+    void httpSuccessTest() throws JsonProcessingException {
+        int code = HttpRequest.post(getUrl("/api/code"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .acceptJson()
                 .send(mapper.writeValueAsString(TelVerifyServiceImplTest.VALID_TEL))
@@ -106,8 +107,8 @@ public class AuthIntegrationTest {
     }
 
     @Test
-    public void httpBadRequestTest() throws JsonProcessingException {
-        final int code = HttpRequest.post(getUrl("/api/code"))
+    void httpBadRequestTest() throws JsonProcessingException {
+        int code = HttpRequest.post(getUrl("/api/code"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .acceptJson()
                 .send(mapper.writeValueAsString(TelVerifyServiceImplTest.INVALID_TEL))

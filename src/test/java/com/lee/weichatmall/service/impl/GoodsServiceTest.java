@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.lee.weichatmall.WeichatmallApplication;
 import com.lee.weichatmall.domain.Goods;
+import com.lee.weichatmall.domain.goods.GoodsStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -96,24 +97,49 @@ class GoodsServiceTest {
 
     @Test
     void updateGoods() {
-        normalGoods.setId(1L);
-        normalGoods.setStock(1);
-        int code = updateGoodsExact(normalGoods);
+        Goods newGoods = createNewGoods(normalGoods);
+        newGoods.setStock(200);
+        int code = updateGoodsExact(newGoods);
         Assertions.assertEquals(HTTP_OK, code);
 
-        notFoundGoods.setId(2L);
-        notFoundGoods.setStock(2);
-        int code2 = updateGoodsExact(notFoundGoods);
+        Goods newGoods2 = createNewGoods(normalGoods);
+        newGoods2.setShopId(12222L);
+        int code2 = updateGoodsExact(normalGoods);
         Assertions.assertEquals(HTTP_BAD_REQUEST, code2);
 
-        noRightGoods.setId(3L);
-        noRightGoods.setStock(3);
+        noRightGoods.setId(2L);
         int code3 = updateGoodsExact(noRightGoods);
         Assertions.assertEquals(HTTP_FORBIDDEN, code3);
 
-        normalGoods.setId(800L);
-        int code4 = updateGoodsExact(normalGoods);
+        Goods newGoods3 = createNewGoods(normalGoods);
+        newGoods3.setId(800L);
+        int code4 = updateGoodsExact(newGoods3);
         Assertions.assertEquals(HTTP_NOT_FOUND, code4);
+    }
+
+    @Test
+    void deleteGoods() {
+        // normal
+        Goods newGoods = createNewGoods(normalGoods);
+        int code = deleteGoodsExact(newGoods);
+        Assertions.assertEquals(HTTP_NO_CONTENT, code);
+        Assertions.assertEquals(GoodsStatus.DELETED_STATUS, GoodsStatus.DELETED_STATUS);
+
+        int code2 = deleteGoodsExact(2L);
+        Assertions.assertEquals(HTTP_FORBIDDEN, code2);
+
+        int code3 = deleteGoodsExact(12345L);
+        Assertions.assertEquals(HTTP_NOT_FOUND, code3);
+    }
+
+    private Goods createNewGoods(Goods goods) {
+        String body = HttpRequest.post(getUrl("/api/goods"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .acceptJson()
+                .header("Cookie", COOKIE)
+                .send(JSON.toJSONString(goods))
+                .body();
+        return JSON.parseObject(body).getObject("data", Goods.class);
     }
 
     private int updateGoodsExact(Goods goods) {
@@ -134,4 +160,19 @@ class GoodsServiceTest {
                 .code();
     }
 
+    private int deleteGoodsExact(Goods goods) {
+        return HttpRequest.delete(getUrl("/api/goods/" + goods.getId()))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .acceptJson()
+                .header("Cookie", COOKIE)
+                .code();
+    }
+
+    private int deleteGoodsExact(long goodsId) {
+        return HttpRequest.delete(getUrl("/api/goods/" + goodsId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .acceptJson()
+                .header("Cookie", COOKIE)
+                .code();
+    }
 }

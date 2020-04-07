@@ -274,6 +274,9 @@ public class GoodsController {
         } catch (ResourceNotFoundException e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return Response.of(e.getMessage(), null);
+        } catch (GoodsInfoWrongForShopException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return Response.of(e.getMessage(), null);
         }
     }
 }
