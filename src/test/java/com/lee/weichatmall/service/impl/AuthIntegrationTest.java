@@ -23,7 +23,7 @@ import static java.net.HttpURLConnection.*;
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = WeichatmallApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:application.yml")
+@TestPropertySource(locations = "classpath:test-application.yml")
 class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test
@@ -33,11 +33,11 @@ class AuthIntegrationTest extends AbstractIntegrationTest {
         HashMap statusResponse = JSON.parseObject(body, HashMap.class);
         Assertions.assertFalse((Boolean) statusResponse.get("login"));
         // send sms and get code, access /api/login, return set-cookie
-        int code = sendRequest("/api/code", TelVerifyServiceImplTest.VALID_TEL, false, "")
+        int code = sendRequest("/api/code", TelVerifyServiceTest.VALID_TEL, false, "")
                 .code();
         Assertions.assertEquals(HTTP_OK, code);
 
-        Map<String, List<String>> headers = sendRequest("/api/login", TelVerifyServiceImplTest.VALID_TEL_CODE, false, "")
+        Map<String, List<String>> headers = sendRequest("/api/login", TelVerifyServiceTest.VALID_TEL_CODE, false, "")
                 .headers();
         List<String> setCookies = headers.get("Set-Cookie");
         Assertions.assertNotNull(setCookies);
@@ -69,14 +69,14 @@ class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void httpSuccessTest() {
-        int code = sendRequest("/api/code", TelVerifyServiceImplTest.VALID_TEL, false, "")
+        int code = sendRequest("/api/code", TelVerifyServiceTest.VALID_TEL, false, "")
                 .code();
         Assertions.assertEquals(HTTP_OK, code);
     }
 
     @Test
     void httpBadRequestTest() {
-        int code = sendRequest("/api/code", TelVerifyServiceImplTest.INVALID_TEL, false, "")
+        int code = sendRequest("/api/code", TelVerifyServiceTest.INVALID_TEL, false, "")
                 .code();
         Assertions.assertEquals(HTTP_BAD_REQUEST, code);
     }

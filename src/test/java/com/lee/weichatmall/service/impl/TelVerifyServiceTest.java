@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
  * Date: 2020-03-25
  * Time: 14:53
  */
-class TelVerifyServiceImplTest {
+class TelVerifyServiceTest {
     public static TelAndCode VALID_TEL = new TelAndCode("13127755898", null);
     public static TelAndCode INVALID_TEL = new TelAndCode("1312775589", null);
     public static TelAndCode VALID_TEL_CODE = new TelAndCode("13127755898", "000000");

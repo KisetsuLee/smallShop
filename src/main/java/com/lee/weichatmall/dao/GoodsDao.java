@@ -2,6 +2,8 @@ package com.lee.weichatmall.dao;
 
 import com.lee.weichatmall.domain.Goods;
 
+import java.util.List;
+
 /**
  * Description:
  * User: Lzj
@@ -16,4 +18,12 @@ public interface GoodsDao {
     Goods updateGoods(Long goodsId, Goods newGoods);
 
     Goods findGoodsById(Long goodsId);
+
+    int getGoodsCounts();
+
+    int getGoodsCounts(Integer shopId);
+
+    List<Goods> getGoods(Integer pageNum, Integer pageSize);
+
+    List<Goods> getGoods(Integer pageNum, Integer pageSize, Integer shopId);
 }

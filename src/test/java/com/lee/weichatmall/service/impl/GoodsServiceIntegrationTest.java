@@ -1,10 +1,12 @@
 package com.lee.weichatmall.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.lee.weichatmall.WeichatmallApplication;
 import com.lee.weichatmall.domain.Goods;
 import com.lee.weichatmall.domain.goods.GoodsStatus;
+import com.lee.weichatmall.domain.responesesEntity.PageResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static java.net.HttpURLConnection.*;
@@ -25,9 +26,8 @@ import static java.net.HttpURLConnection.*;
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = WeichatmallApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:application.yml")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GoodsServiceTest extends AbstractIntegrationTest {
+class GoodsServiceIntegrationTest extends AbstractIntegrationTest {
     private String COOKIE;
     private Goods normalGoods = new Goods(); // 能够正常添加的商品
     private Goods notFoundGoods = new Goods(); // 找不到的商品
@@ -101,6 +101,34 @@ class GoodsServiceTest extends AbstractIntegrationTest {
 
         int code3 = deleteGoodsExact(12345L);
         Assertions.assertEquals(HTTP_NOT_FOUND, code3);
+    }
+
+    @Test
+    void getGoodsByPageWithoutShopId() {
+        int code = sendRequest("/api/goods?pageNum=1&pageSize=3", null, true, "").code();
+        Assertions.assertEquals(HTTP_UNAUTHORIZED, code);
+        int code1 = sendRequest("/api/goods?pageNum=1&pageSize=3", null, true, COOKIE).code();
+        Assertions.assertEquals(HTTP_OK, code1);
+
+        String body = sendRequest("/api/goods?pageNum=1&pageSize=3", null, true, COOKIE).body();
+        PageResponse<Goods> pageResponse = JSON.parseObject(body, new TypeReference<PageResponse<Goods>>() {
+        });
+        Assertions.assertEquals(1, pageResponse.getPageNum());
+        Assertions.assertEquals(3, pageResponse.getData().size());
+    }
+
+    @Test
+    void getGoodsByPageWithShopId() {
+        int code = sendRequest("/api/goods?pageNum=1&pageSize=3&shopId=100", null, true, "").code();
+        Assertions.assertEquals(HTTP_UNAUTHORIZED, code);
+        int code1 = sendRequest("/api/goods?pageNum=1&pageSize=3&shopId=100", null, true, COOKIE).code();
+        Assertions.assertEquals(HTTP_OK, code1);
+
+        String body = sendRequest("/api/goods?pageNum=1&pageSize=3&shopId=100", null, true, COOKIE).body();
+        PageResponse<Goods> pageResponse = JSON.parseObject(body, new TypeReference<PageResponse<Goods>>() {
+        });
+        Assertions.assertEquals(1, pageResponse.getPageNum());
+        Assertions.assertEquals(2, pageResponse.getData().size());
     }
 
     private Goods createNewGoods(Goods goods) {

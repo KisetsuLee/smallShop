@@ -1,6 +1,7 @@
 package com.lee.weichatmall.controller;
 
 import com.lee.weichatmall.domain.Goods;
+import com.lee.weichatmall.domain.responesesEntity.PageResponse;
 import com.lee.weichatmall.domain.responesesEntity.Response;
 import com.lee.weichatmall.service.GoodsService;
 import com.lee.weichatmall.service.exception.goodsDao.ResourceNotFoundException;
@@ -60,6 +61,7 @@ public class GoodsController {
      * }
      * ]
      * }
+     * @apiError 400 Bad Request 若用户的请求中包含错误
      * @apiError 401 Unauthorized 若用户未登录
      * @apiErrorExample Error-Response:
      * HTTP/1.1 401 Unauthorized
@@ -67,8 +69,30 @@ public class GoodsController {
      * "message": "Unauthorized"
      * }
      */
+    /**
+     * @param pageNum
+     * @param pageSize
+     * @param shopId
+     * @return 分页数据
+     */
     // @formatter:on
-    public void getGoods() {
+    @RequestMapping("/goods")
+    public PageResponse<Goods> getGoods(@RequestParam("pageNum") Integer pageNum,
+                                        @RequestParam("pageSize") Integer pageSize,
+                                        @RequestParam(value = "shopId", required = false) Integer shopId,
+                                        HttpServletResponse response) {
+        PageResponse<Goods> pageResponse;
+        if (shopId == null) {
+            pageResponse = goodsService.getGoodsByPage(pageNum, pageSize);
+        } else {
+            try {
+                pageResponse = goodsService.getGoodsByPage(pageNum, pageSize, shopId);
+            } catch (GoodsInfoWrongForShopException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return PageResponse.newInstance(0, 0, null, 0);
+            }
+        }
+        return pageResponse;
     }
 
     // @formatter:off
