@@ -20,6 +20,7 @@
         <my.mysql.username>root</my.mysql.username>
         <my.mysql.password>123456</my.mysql.password>
         <my.mysql.url>jdbc:mysql://172.16.14.195:3306/weiShop?characterEncoding=utf-8</my.mysql.url>
+        <my.mysql.test.url>jdbc:mysql://172.16.14.195:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>
     </properties>
 
     <dependencies>
@@ -111,6 +112,9 @@
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>1.4.0</version>
+                <configuration>
+                    <overwrite>true</overwrite>
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>mysql</groupId>
@@ -225,6 +229,10 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/test/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>

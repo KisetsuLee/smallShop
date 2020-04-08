@@ -10,15 +10,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.List;
-import java.util.Map;
 
 import static java.net.HttpURLConnection.*;
 
@@ -32,39 +27,15 @@ import static java.net.HttpURLConnection.*;
 @SpringBootTest(classes = WeichatmallApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:application.yml")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GoodsServiceTest {
+class GoodsServiceTest extends AbstractIntegrationTest {
     private String COOKIE;
     private Goods normalGoods = new Goods(); // 能够正常添加的商品
     private Goods notFoundGoods = new Goods(); // 找不到的商品
     private Goods noRightGoods = new Goods(); // 无权操作的商品
 
-    @Autowired
-    Environment environment;
-
-    private String getUrl(String apiName) {
-        return "http://localhost:" + environment.getProperty("local.server.port") + apiName;
-    }
-
     @BeforeAll
     void loginSystem() {
-        int code = HttpRequest.post(getUrl("/api/code"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .acceptJson()
-                .send(JSON.toJSONString(TelVerifyServiceImplTest.VALID_TEL))
-                .code();
-        Assertions.assertEquals(HTTP_OK, code);
-
-        final Map<String, List<String>> headers = HttpRequest.post(getUrl("/api/login"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .acceptJson()
-                .send(JSON.toJSONString(TelVerifyServiceImplTest.VALID_TEL_CODE))
-                .headers();
-        final List<String> setCookies = headers.get("Set-Cookie");
-        Assertions.assertNotNull(setCookies);
-        // access /api/status with cookie, return true and user information
-        COOKIE = setCookies.stream()
-                .filter(cookie -> cookie.contains("JSESSIONID"))
-                .findFirst().get();
+        COOKIE = loginAndGetCookie();
 
         normalGoods.setName("肥皂");
         normalGoods.setDescription("纯天然无污染肥皂");

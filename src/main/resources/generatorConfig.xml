@@ -5,6 +5,7 @@
 
 <generatorConfiguration>
     <context id="MyDB" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
         <jdbcConnection driverClass="${my.mysql.driver}"
                         connectionURL="${my.mysql.url}"
                         userId="${my.mysql.username}"

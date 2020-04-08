@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: ${my.mysql.test.url}
+    username: ${my.mysql.username}
+    password: ${my.mysql.password}
+    driver-class-name: ${my.mysql.driver}
+mybatis:
+  config-location: classpath:db/mybatis/config.xml
