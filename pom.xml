@@ -14,6 +14,30 @@
     <name>weichatmall</name>
     <description>weichatmall</description>
 
+    <!--    <profiles>-->
+    <!--        <profile>-->
+    <!--            <id>production</id>-->
+    <!--            <properties>-->
+    <!--                <my.mysql.driver>com.mysql.cj.jdbc.Driver</my.mysql.driver>-->
+    <!--                <my.mysql.username>root</my.mysql.username>-->
+    <!--                <my.mysql.password>123456</my.mysql.password>-->
+    <!--                <my.mysql.url>jdbc:mysql://172.16.14.195:3306/weiShop?characterEncoding=utf-8</my.mysql.url>-->
+    <!--            </properties>-->
+    <!--            <activation>-->
+    <!--                <activeByDefault>true</activeByDefault>-->
+    <!--            </activation>-->
+    <!--        </profile>-->
+    <!--        <profile>-->
+    <!--            <id>test</id>-->
+    <!--            <properties>-->
+    <!--                <my.mysql.driver>com.mysql.cj.jdbc.Driver</my.mysql.driver>-->
+    <!--                <my.mysql.username>root</my.mysql.username>-->
+    <!--                <my.mysql.password>123456</my.mysql.password>-->
+    <!--                <my.mysql.url>jdbc:mysql://172.16.14.195:3307/weiShop?characterEncoding=utf-8</my.mysql.url>-->
+    <!--            </properties>-->
+    <!--        </profile>-->
+    <!--    </profiles>-->
+
     <properties>
         <java.version>1.8</java.version>
         <my.mysql.driver>com.mysql.cj.jdbc.Driver</my.mysql.driver>
@@ -21,6 +45,8 @@
         <my.mysql.password>123456</my.mysql.password>
         <my.mysql.url>jdbc:mysql://172.16.14.195:3306/weiShop?characterEncoding=utf-8</my.mysql.url>
         <my.mysql.test.url>jdbc:mysql://172.16.14.195:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>
+        <!--        <my.mysql.url>jdbc:mysql://192.168.31.116:3306/weiShop?characterEncoding=utf-8</my.mysql.url>-->
+        <!--        <my.mysql.test.url>jdbc:mysql://192.168.31.116:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>-->
     </properties>
 
     <dependencies>
@@ -243,11 +269,13 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
-            <resource>
+        </resources>
+        <testResources>
+            <testResource>
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
-            </resource>
-        </resources>
+            </testResource>
+        </testResources>
     </build>
 
     <!--    <reporting>-->

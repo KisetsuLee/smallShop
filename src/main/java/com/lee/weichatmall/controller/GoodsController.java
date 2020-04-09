@@ -73,24 +73,21 @@ public class GoodsController {
      * @param pageNum
      * @param pageSize
      * @param shopId
+     * @param response
      * @return 分页数据
      */
     // @formatter:on
     @RequestMapping("/goods")
     public PageResponse<Goods> getGoods(@RequestParam("pageNum") Integer pageNum,
                                         @RequestParam("pageSize") Integer pageSize,
-                                        @RequestParam(value = "shopId", required = false) Integer shopId,
+                                        @RequestParam(value = "shopId", required = false) Long shopId,
                                         HttpServletResponse response) {
         PageResponse<Goods> pageResponse;
-        if (shopId == null) {
-            pageResponse = goodsService.getGoodsByPage(pageNum, pageSize);
-        } else {
-            try {
-                pageResponse = goodsService.getGoodsByPage(pageNum, pageSize, shopId);
-            } catch (GoodsInfoWrongForShopException e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                return PageResponse.newInstance(0, 0, null, 0);
-            }
+        try {
+            pageResponse = goodsService.getGoodsByPage(pageNum, pageSize, shopId);
+        } catch (GoodsInfoWrongForShopException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return PageResponse.newInstance(0, 0, null, 0);
         }
         return pageResponse;
     }

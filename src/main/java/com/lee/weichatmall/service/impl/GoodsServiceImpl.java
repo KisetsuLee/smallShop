@@ -50,15 +50,10 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageResponse<Goods> getGoodsByPage(Integer pageNum, Integer pageSize) {
-        int count = goodsDao.getGoodsCounts();
-        List<Goods> goods = goodsDao.getGoods(pageNum, pageSize);
-        return PageResponse.newInstance(pageNum, pageSize, goods, count);
-    }
-
-    @Override
-    public PageResponse<Goods> getGoodsByPage(Integer pageNum, Integer pageSize, Integer shopId) {
-        checkGoodsInCorrectShop(Long.valueOf(shopId));
+    public PageResponse<Goods> getGoodsByPage(Integer pageNum, Integer pageSize, Long shopId) {
+        if (shopId != null) {
+            checkGoodsInCorrectShop(shopId);
+        }
         int count = goodsDao.getGoodsCounts(shopId);
         List<Goods> goods = goodsDao.getGoods(pageNum, pageSize, shopId);
         return PageResponse.newInstance(pageNum, pageSize, goods, count);

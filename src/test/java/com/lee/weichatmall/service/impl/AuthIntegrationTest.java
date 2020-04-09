@@ -23,7 +23,7 @@ import static java.net.HttpURLConnection.*;
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = WeichatmallApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:test-application.yml")
+@TestPropertySource(locations = "classpath:application-test.yml")
 class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test

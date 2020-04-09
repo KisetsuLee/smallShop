@@ -19,11 +19,7 @@ public interface GoodsDao {
 
     Goods findGoodsById(Long goodsId);
 
-    int getGoodsCounts();
+    int getGoodsCounts(Long shopId);
 
-    int getGoodsCounts(Integer shopId);
-
-    List<Goods> getGoods(Integer pageNum, Integer pageSize);
-
-    List<Goods> getGoods(Integer pageNum, Integer pageSize, Integer shopId);
+    List<Goods> getGoods(Integer pageNum, Integer pageSize, Long shopId);
 }

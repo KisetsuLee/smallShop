@@ -94,7 +94,7 @@ class GoodsServiceIntegrationTest extends AbstractIntegrationTest {
         Goods newGoods = createNewGoods(normalGoods);
         int code = deleteGoodsExact(newGoods);
         Assertions.assertEquals(HTTP_NO_CONTENT, code);
-        Assertions.assertEquals(GoodsStatus.DELETED_STATUS, GoodsStatus.DELETED_STATUS);
+        Assertions.assertEquals(GoodsStatus.DELETE.getValue(), GoodsStatus.DELETE.getValue());
 
         int code2 = deleteGoodsExact(2L);
         Assertions.assertEquals(HTTP_FORBIDDEN, code2);

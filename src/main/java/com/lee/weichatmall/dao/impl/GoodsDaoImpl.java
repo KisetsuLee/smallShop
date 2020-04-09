@@ -34,7 +34,7 @@ public class GoodsDaoImpl implements GoodsDao {
     @Override
     public Goods deleteGoodsById(Long goodsId) {
         Goods goods = findGoodsById(goodsId);
-        goods.setStatus(GoodsStatus.DELETED_STATUS);
+        goods.setStatus(GoodsStatus.DELETE.getValue());
         goodsMapper.updateByPrimaryKey(goods);
         return goods;
     }
@@ -57,33 +57,32 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public int getGoodsCounts() {
+    public int getGoodsCounts(Long shopId) {
         GoodsExample goodsExample = new GoodsExample();
+        if (shopId == null) {
+            goodsExample.createCriteria()
+                    .andStatusEqualTo(GoodsStatus.OK.getValue());
+        } else {
+            goodsExample.createCriteria()
+                    .andStatusEqualTo(GoodsStatus.OK.getValue())
+                    .andShopIdEqualTo(shopId);
+        }
         return (int) goodsMapper.countByExample(goodsExample);
     }
 
     @Override
-    public List<Goods> getGoods(Integer pageNum, Integer pageSize) {
+    public List<Goods> getGoods(Integer pageNum, Integer pageSize, Long shopId) {
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.setLimit(pageSize);
         goodsExample.setOffset((pageNum - 1) * pageSize);
-        return goodsMapper.selectByExample(goodsExample);
-    }
-
-    @Override
-    public int getGoodsCounts(Integer shopId) {
-        GoodsExample goodsExample = new GoodsExample();
-        goodsExample.createCriteria().andShopIdEqualTo(Long.valueOf(shopId));
-        return (int) goodsMapper.countByExample(goodsExample);
-
-    }
-
-    @Override
-    public List<Goods> getGoods(Integer pageNum, Integer pageSize, Integer shopId) {
-        GoodsExample goodsExample = new GoodsExample();
-        goodsExample.setLimit(pageSize);
-        goodsExample.setOffset((pageNum - 1) * pageSize);
-        goodsExample.createCriteria().andShopIdEqualTo(Long.valueOf(shopId));
+        if (shopId == null) {
+            goodsExample.createCriteria()
+                    .andStatusEqualTo(GoodsStatus.OK.getValue());
+        } else {
+            goodsExample.createCriteria()
+                    .andStatusEqualTo(GoodsStatus.OK.getValue())
+                    .andShopIdEqualTo(shopId);
+        }
         return goodsMapper.selectByExample(goodsExample);
     }
 

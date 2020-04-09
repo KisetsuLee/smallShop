@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
@@ -24,10 +25,12 @@ import static java.net.HttpURLConnection.HTTP_OK;
  * Time: 10:14
  */
 
-@TestPropertySource(locations = "classpath:test-application.yml")
+@TestPropertySource(locations = "classpath:application-test.yml")
+@ActiveProfiles("test")
 public abstract class AbstractIntegrationTest {
     @Autowired
     Environment environment;
+
     @Value("${spring.datasource.url}")
     private String url;
     @Value("${spring.datasource.username}")

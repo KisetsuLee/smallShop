@@ -16,7 +16,5 @@ public interface GoodsService {
 
     Goods updateGoodsById(Long goodsId, Goods goods);
 
-    PageResponse<Goods> getGoodsByPage(Integer pageNum, Integer shopId);
-
-    PageResponse<Goods> getGoodsByPage(Integer num, Integer pageNum, Integer pageSize);
+    PageResponse<Goods> getGoodsByPage(Integer num, Integer pageNum, Long pageSize);
 }
