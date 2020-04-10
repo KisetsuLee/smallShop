@@ -6,8 +6,6 @@ import com.lee.weichatmall.domain.Goods;
 import com.lee.weichatmall.domain.Shop;
 import com.lee.weichatmall.domain.User;
 import com.lee.weichatmall.service.UserContext;
-import com.lee.weichatmall.service.exception.goodsService.GoodsInfoWrongForShopException;
-import com.lee.weichatmall.service.exception.goodsService.NotAuthorizedForShopException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.when;
 
 /**
  * Description:
@@ -49,34 +49,28 @@ class GoodsServiceUnitTest {
         UserContext.setCurrentUser(null);
     }
 
-    @Test
-    void createGoodsIfUserIsShopOwner() {
-        // Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
-        ifShopFound();
-        Mockito.when(shop.getOwnerUserId()).thenReturn(1L);
-        Assertions.assertEquals(UserContext.getCurrentUser().getId(), shop.getOwnerUserId());
-        Mockito.when(goodsDao.insertGoods(goods)).thenReturn(goods);
-        Assertions.assertEquals(goods, goodsService.createGoods(goods));
+    void ifShopIdCorrect() {
+        when(shopDao.findShopById(anyLong())).thenReturn(shop);
     }
 
     @Test
-    void ifUserIsNotShopOwner() {
-        Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
-        Mockito.when(shop.getOwnerUserId()).thenReturn(2L);
-        Assertions.assertThrows(NotAuthorizedForShopException.class, () -> {
-            goodsService.createGoods(goods);
-        });
+    void ifShopIdInCorrect() {
+        when(shopDao.findShopById(anyLong())).thenReturn(null);
+    }
+
+    void ifUserHasAuthorized() {
+        ifShopIdCorrect();
+        when(shop.getOwnerUserId()).thenReturn(1L);
+    }
+
+    void ifUserHasUnauthorized() {
+        ifShopIdCorrect();
+        when(shop.getOwnerUserId()).thenReturn(2L);
     }
 
     @Test
-    void ifShopNotFound() {
-        Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(null);
-        Assertions.assertThrows(GoodsInfoWrongForShopException.class, () -> {
-            goodsService.createGoods(goods);
-        });
-    }
-
-    void ifShopFound() {
-        Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
+    void createGoodsSucceed() {
+        when(goodsDao.insertGoods(goods)).thenReturn(goods);
+        Assertions.assertEquals(goods, goodsDao.insertGoods(goods));
     }
 }

@@ -60,7 +60,7 @@ class GoodsServiceIntegrationTest extends AbstractIntegrationTest {
         Assertions.assertEquals(HTTP_CREATED, code);
 
         int code2 = createGoodsExact(notFoundGoods);
-        Assertions.assertEquals(HTTP_BAD_REQUEST, code2);
+        Assertions.assertEquals(HTTP_NOT_FOUND, code2);
 
         int code3 = createGoodsExact(noRightGoods);
         Assertions.assertEquals(HTTP_FORBIDDEN, code3);

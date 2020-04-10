@@ -7,8 +7,7 @@ import com.lee.weichatmall.domain.Shop;
 import com.lee.weichatmall.domain.responesesEntity.PageResponse;
 import com.lee.weichatmall.service.GoodsService;
 import com.lee.weichatmall.service.UserContext;
-import com.lee.weichatmall.service.exception.goodsService.GoodsInfoWrongForShopException;
-import com.lee.weichatmall.service.exception.goodsService.NotAuthorizedForShopException;
+import com.lee.weichatmall.service.exception.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,14 +61,14 @@ public class GoodsServiceImpl implements GoodsService {
     private Shop checkGoodsInCorrectShop(Long shopId) {
         Shop shop = shopDao.findShopById(shopId);
         if (shop == null) {
-            throw new GoodsInfoWrongForShopException("商品信息有误！");
+            throw HttpException.resourceNotFound("商品信息有误！店铺未找到！");
         }
         return shop;
     }
 
     private void isUserHasAuthorizedForGoods(Long ownerUserId) {
         if (!Objects.equals(ownerUserId, UserContext.getCurrentUser().getId())) {
-            throw new NotAuthorizedForShopException("无权访问！");
+            throw HttpException.forbidden("无权访问！");
         }
     }
 

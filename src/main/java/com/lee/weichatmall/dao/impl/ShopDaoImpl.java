@@ -3,6 +3,7 @@ package com.lee.weichatmall.dao.impl;
 import com.lee.weichatmall.dao.ShopDao;
 import com.lee.weichatmall.dao.mapper.ShopMapper;
 import com.lee.weichatmall.domain.Shop;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Repository;
  * Date: 2020-04-02
  * Time: 11:04
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Repository
 public class ShopDaoImpl implements ShopDao {
     private ShopMapper shopMapper;
 
+    @Autowired
     public ShopDaoImpl(ShopMapper shopMapper) {
         this.shopMapper = shopMapper;
     }

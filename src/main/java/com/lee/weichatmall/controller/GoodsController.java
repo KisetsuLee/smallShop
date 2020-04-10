@@ -4,9 +4,7 @@ import com.lee.weichatmall.domain.Goods;
 import com.lee.weichatmall.domain.responesesEntity.PageResponse;
 import com.lee.weichatmall.domain.responesesEntity.Response;
 import com.lee.weichatmall.service.GoodsService;
-import com.lee.weichatmall.service.exception.goodsDao.ResourceNotFoundException;
-import com.lee.weichatmall.service.exception.goodsService.GoodsInfoWrongForShopException;
-import com.lee.weichatmall.service.exception.goodsService.NotAuthorizedForShopException;
+import com.lee.weichatmall.service.exception.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,8 +83,8 @@ public class GoodsController {
         PageResponse<Goods> pageResponse;
         try {
             pageResponse = goodsService.getGoodsByPage(pageNum, pageSize, shopId);
-        } catch (GoodsInfoWrongForShopException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (HttpException e) {
+            response.setStatus(e.getHttpStatusCode());
             return PageResponse.newInstance(0, 0, null, 0);
         }
         return pageResponse;
@@ -155,11 +153,8 @@ public class GoodsController {
         response.setStatus(HttpServletResponse.SC_CREATED);
         try {
             return Response.of(goodsService.createGoods(goods));
-        } catch (NotAuthorizedForShopException e) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return Response.of(e.getMessage(), null);
-        } catch (GoodsInfoWrongForShopException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (HttpException e) {
+            response.setStatus(e.getHttpStatusCode());
             return Response.of(e.getMessage(), null);
         }
     }
@@ -226,14 +221,8 @@ public class GoodsController {
         try {
             Goods updateGoods = goodsService.updateGoodsById(goodsId, goods);
             return Response.of(updateGoods);
-        } catch (ResourceNotFoundException e) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return Response.of(e.getMessage(), null);
-        } catch (NotAuthorizedForShopException e) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return Response.of(e.getMessage(), null);
-        } catch (GoodsInfoWrongForShopException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (HttpException e) {
+            response.setStatus(e.getHttpStatusCode());
             return Response.of(e.getMessage(), null);
         }
     }
@@ -289,14 +278,8 @@ public class GoodsController {
         try {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return Response.of(goodsService.deleteGoodsById(goodsId));
-        } catch (NotAuthorizedForShopException e) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return Response.of(e.getMessage(), null);
-        } catch (ResourceNotFoundException e) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return Response.of(e.getMessage(), null);
-        } catch (GoodsInfoWrongForShopException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (HttpException e) {
+            response.setStatus(e.getHttpStatusCode());
             return Response.of(e.getMessage(), null);
         }
     }

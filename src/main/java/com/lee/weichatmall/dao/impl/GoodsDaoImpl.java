@@ -5,7 +5,7 @@ import com.lee.weichatmall.dao.mapper.GoodsMapper;
 import com.lee.weichatmall.domain.Goods;
 import com.lee.weichatmall.domain.GoodsExample;
 import com.lee.weichatmall.domain.goods.GoodsStatus;
-import com.lee.weichatmall.service.exception.goodsDao.ResourceNotFoundException;
+import com.lee.weichatmall.service.exception.HttpException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class GoodsDaoImpl implements GoodsDao {
     public Goods findGoodsById(Long goodsId) {
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
         if (goods == null) {
-            throw new ResourceNotFoundException("商品未找到");
+            throw HttpException.resourceNotFound("商品未找到");
         }
         return goods;
     }
