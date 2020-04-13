@@ -34,7 +34,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Goods deleteGoodsById(Long goodsId) {
-        Goods goods = goodsDao.findGoodsById(goodsId);
+        Goods goods = getGoodsInfoById(goodsId);
         Shop shop = checkGoodsInCorrectShop(goods.getShopId());
         isUserHasAuthorizedForGoods(shop.getOwnerUserId());
         return goodsDao.deleteGoodsById(goodsId);
@@ -42,7 +42,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Goods updateGoodsById(Long goodsId, Goods newGoods) {
-        Goods goods = goodsDao.findGoodsById(goodsId);
+        Goods goods = getGoodsInfoById(goodsId);
         Shop shop = checkGoodsInCorrectShop(goods.getShopId());
         isUserHasAuthorizedForGoods(shop.getOwnerUserId());
         return goodsDao.updateGoods(goodsId, newGoods);
@@ -58,7 +58,15 @@ public class GoodsServiceImpl implements GoodsService {
         return PageResponse.newInstance(pageNum, pageSize, goods, count);
     }
 
-    private Shop checkGoodsInCorrectShop(Long shopId) {
+    public Goods getGoodsInfoById(Long goodsId) {
+        Goods goods = goodsDao.findGoodsById(goodsId);
+        if (goods == null) {
+            throw HttpException.resourceNotFound("商品未找到");
+        }
+        return goods;
+    }
+
+    public Shop checkGoodsInCorrectShop(Long shopId) {
         Shop shop = shopDao.findShopById(shopId);
         if (shop == null) {
             throw HttpException.resourceNotFound("商品信息有误！店铺未找到！");
@@ -66,10 +74,9 @@ public class GoodsServiceImpl implements GoodsService {
         return shop;
     }
 
-    private void isUserHasAuthorizedForGoods(Long ownerUserId) {
+    public void isUserHasAuthorizedForGoods(Long ownerUserId) {
         if (!Objects.equals(ownerUserId, UserContext.getCurrentUser().getId())) {
             throw HttpException.forbidden("无权访问！");
         }
     }
-
 }
