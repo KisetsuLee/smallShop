@@ -47,6 +47,7 @@
         <my.mysql.test.url>jdbc:mysql://172.16.14.195:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>
         <!--        <my.mysql.url>jdbc:mysql://192.168.31.116:3306/weiShop?characterEncoding=utf-8</my.mysql.url>-->
         <!--        <my.mysql.test.url>jdbc:mysql://192.168.31.116:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>-->
+        <powermock.version>2.0.2</powermock.version>
     </properties>
 
     <dependencies>
@@ -122,18 +123,18 @@
             <version>6.3.3</version>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.powermock</groupId>-->
-        <!--            <artifactId>powermock-module-junit4</artifactId>-->
-        <!--            <version>2.0.2</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.powermock</groupId>-->
-        <!--            <artifactId>powermock-api-mockito</artifactId>-->
-        <!--            <version>2.0.2</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

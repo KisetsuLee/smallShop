@@ -17,4 +17,6 @@ public interface GoodsService {
     Goods updateGoodsById(Long goodsId, Goods goods);
 
     PageResponse<Goods> getGoodsByPage(Integer num, Integer pageNum, Long pageSize);
+
+    Goods getGoodsInfoById(Long goodsId);
 }

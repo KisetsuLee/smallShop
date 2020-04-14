@@ -58,6 +58,7 @@ public class GoodsServiceImpl implements GoodsService {
         return PageResponse.newInstance(pageNum, pageSize, goods, count);
     }
 
+    @Override
     public Goods getGoodsInfoById(Long goodsId) {
         Goods goods = goodsDao.findGoodsById(goodsId);
         if (goods == null) {
@@ -66,7 +67,7 @@ public class GoodsServiceImpl implements GoodsService {
         return goods;
     }
 
-    public Shop checkGoodsInCorrectShop(Long shopId) {
+    private Shop checkGoodsInCorrectShop(Long shopId) {
         Shop shop = shopDao.findShopById(shopId);
         if (shop == null) {
             throw HttpException.resourceNotFound("商品信息有误！店铺未找到！");
@@ -74,7 +75,7 @@ public class GoodsServiceImpl implements GoodsService {
         return shop;
     }
 
-    public void isUserHasAuthorizedForGoods(Long ownerUserId) {
+    private void isUserHasAuthorizedForGoods(Long ownerUserId) {
         if (!Objects.equals(ownerUserId, UserContext.getCurrentUser().getId())) {
             throw HttpException.forbidden("无权访问！");
         }
