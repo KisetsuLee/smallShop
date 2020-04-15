@@ -8,4 +8,12 @@ CREATE TABLE SHOP
     STATUS        VARCHAR(16),
     CREATED_AT    TIMESTAMP NOT NULL DEFAULT NOW(),
     UPDATED_AT    TIMESTAMP NOT NULL DEFAULT NOW()
-)
+);
+
+insert into SHOP
+    (id, name, description, owner_user_id, status)
+values (1, 'shop1', '测试店', 1, 'ok');
+
+insert into SHOP
+(id, name, description, owner_user_id, status)
+values (2, 'shop2', '测试店2', 100, 'ok');

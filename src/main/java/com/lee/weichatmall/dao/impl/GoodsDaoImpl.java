@@ -4,7 +4,7 @@ import com.lee.weichatmall.dao.GoodsDao;
 import com.lee.weichatmall.dao.mapper.GoodsMapper;
 import com.lee.weichatmall.domain.Goods;
 import com.lee.weichatmall.domain.GoodsExample;
-import com.lee.weichatmall.domain.goods.GoodsStatus;
+import com.lee.weichatmall.domain.status.GoodsStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

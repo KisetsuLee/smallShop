@@ -1,12 +1,12 @@
-package com.lee.weichatmall.domain.goods;
+package com.lee.weichatmall.domain.status;
 
 /**
  * Description:
  * User: Lzj
- * Date: 2020-04-02
- * Time: 15:46
+ * Date: 2020-04-14
+ * Time: 15:59
  */
-public enum GoodsStatus {
+public enum ShopStatus {
     OK(),
     DELETE();
 

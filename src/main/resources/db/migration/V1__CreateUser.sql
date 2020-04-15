@@ -7,4 +7,8 @@ CREATE TABLE USER
     ADDRESS    VARCHAR(1024),
     CREATED_AT TIMESTAMP NOT NULL DEFAULT NOW(),
     UPDATED_AT TIMESTAMP NOT NULL DEFAULT NOW()
-)
+);
+
+insert into `USER`
+(id, name, tel)
+values (1, 'user', '13127755898');

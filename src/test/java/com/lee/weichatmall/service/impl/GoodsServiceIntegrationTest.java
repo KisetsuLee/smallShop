@@ -5,7 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.lee.weichatmall.WeichatmallApplication;
 import com.lee.weichatmall.domain.Goods;
-import com.lee.weichatmall.domain.goods.GoodsStatus;
+import com.lee.weichatmall.domain.status.GoodsStatus;
 import com.lee.weichatmall.domain.responesesEntity.PageResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,17 +39,17 @@ class GoodsServiceIntegrationTest extends AbstractIntegrationTest {
 
         normalGoods.setName("肥皂");
         normalGoods.setDescription("纯天然无污染肥皂");
-        normalGoods.setShopId(100L);
+        normalGoods.setShopId(1L);
         normalGoods.setStock(100);
 
         notFoundGoods.setName("肥皂");
-        notFoundGoods.setDescription("纯天然无污染肥皂");
+        notFoundGoods.setDescription("纯天然无污染肥皂, 找不到商店");
         notFoundGoods.setShopId(100000L);
         notFoundGoods.setStock(100);
 
         noRightGoods.setName("肥皂");
-        noRightGoods.setDescription("纯天然无污染肥皂");
-        noRightGoods.setShopId(200L);
+        noRightGoods.setDescription("纯天然无污染肥皂, 无权限");
+        noRightGoods.setShopId(2L);
         noRightGoods.setStock(100);
     }
 
@@ -119,12 +119,12 @@ class GoodsServiceIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void getGoodsByPageWithShopId() {
-        int code = sendRequest("/api/goods?pageNum=1&pageSize=3&shopId=100", null, true, "").code();
+        int code = sendRequest("/api/goods?pageNum=1&pageSize=3&shopId=2", null, true, "").code();
         Assertions.assertEquals(HTTP_UNAUTHORIZED, code);
-        int code1 = sendRequest("/api/goods?pageNum=1&pageSize=3&shopId=100", null, true, COOKIE).code();
+        int code1 = sendRequest("/api/goods?pageNum=1&pageSize=3&shopId=1", null, true, COOKIE).code();
         Assertions.assertEquals(HTTP_OK, code1);
 
-        String body = sendRequest("/api/goods?pageNum=1&pageSize=3&shopId=100", null, true, COOKIE).body();
+        String body = sendRequest("/api/goods?pageNum=1&pageSize=3&shopId=1", null, true, COOKIE).body();
         PageResponse<Goods> pageResponse = JSON.parseObject(body, new TypeReference<PageResponse<Goods>>() {
         });
         Assertions.assertEquals(1, pageResponse.getPageNum());

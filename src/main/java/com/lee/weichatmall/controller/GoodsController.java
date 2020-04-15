@@ -85,7 +85,7 @@ public class GoodsController {
             pageResponse = goodsService.getGoodsByPage(pageNum, pageSize, shopId);
         } catch (HttpException e) {
             response.setStatus(e.getHttpStatusCode());
-            return PageResponse.newInstance(0, 0, null, 0);
+            return PageResponse.newInstance(0, 1, null, 0);
         }
         return pageResponse;
     }

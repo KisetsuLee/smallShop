@@ -43,7 +43,7 @@ public abstract class AbstractIntegrationTest {
         executeCleanAndMigrateBeforeEachTest(url, username, password);
     }
 
-    protected String loginAndGetCookie() {
+    String loginAndGetCookie() {
         int code = sendRequest("/api/code", TelVerifyServiceTest.VALID_TEL, false, "")
                 .code();
         Assertions.assertEquals(HTTP_OK, code);
@@ -59,11 +59,11 @@ public abstract class AbstractIntegrationTest {
                 .findFirst().get();
     }
 
-    protected String getUrl(String apiName) {
+    String getUrl(String apiName) {
         return "http://localhost:" + environment.getProperty("local.server.port") + apiName;
     }
 
-    protected <T> HttpRequest sendRequest(String url, T requestBody, boolean isGet, String cookie) {
+    <T> HttpRequest sendRequest(String url, T requestBody, boolean isGet, String cookie) {
         HttpRequest request;
         if (isGet) {
             request = HttpRequest.get(getUrl(url))
