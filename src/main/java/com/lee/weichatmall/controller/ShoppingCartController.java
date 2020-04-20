@@ -1,13 +1,24 @@
 package com.lee.weichatmall.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.lee.weichatmall.domain.responesesEntity.Response;
+import com.lee.weichatmall.domain.shoppingCart.GoodsToShoppingCartList;
+import com.lee.weichatmall.domain.shoppingCart.ShoppingCartGoodsWithShop;
+import com.lee.weichatmall.service.ShoppingCartService;
+import com.lee.weichatmall.service.exception.HttpException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api")
 public class ShoppingCartController {
+    private ShoppingCartService shoppingCartService;
+
+    @Autowired
+    public ShoppingCartController(ShoppingCartService shoppingCartService) {
+        this.shoppingCartService = shoppingCartService;
+    }
     // @formatter:off
 
     /**
@@ -132,9 +143,20 @@ public class ShoppingCartController {
      * "message": "Unauthorized"
      * }
      */
+    /**
+     * @param goodsToShoppingCart
+     * @param response
+     * @return 返回当前用户添加此shop的商品
+     */
     // @formatter:on
     @PostMapping("shoppingCart")
-    public void addShoppingCart() {
+    public Response<ShoppingCartGoodsWithShop> addShoppingCart(@RequestBody GoodsToShoppingCartList goodsToShoppingCart, HttpServletResponse response) {
+        try {
+            return Response.of(shoppingCartService.addShoppingCart(goodsToShoppingCart));
+        } catch (HttpException e) {
+            response.setStatus(e.getHttpStatusCode());
+            return Response.of(e.getMessage(), null);
+        }
     }
 
     // @formatter:off

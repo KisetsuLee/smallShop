@@ -12,6 +12,10 @@ public class Response<T> {
         return new Response<T>(null, data);
     }
 
+    private Response() {
+
+    }
+
     private Response(String message, T data) {
         this.message = message;
         this.data = data;

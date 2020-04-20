@@ -81,4 +81,12 @@ public class GoodsDaoImpl implements GoodsDao {
         return goodsMapper.selectByExample(goodsExample);
     }
 
+    @Override
+    public List<Goods> findGoodsByIds(List<Long> goodsIds) {
+        GoodsExample goodsExample = new GoodsExample();
+        goodsExample.createCriteria()
+                .andStatusEqualTo(GoodsStatus.OK.getValue())
+                .andIdIn(goodsIds);
+        return goodsMapper.selectByExample(goodsExample);
+    }
 }

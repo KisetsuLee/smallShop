@@ -20,8 +20,8 @@ public class HttpException extends RuntimeException {
         return new HttpException(message, HttpStatus.FORBIDDEN.value());
     }
 
-    public static HttpException noAuthorization(String message) {
-        return new HttpException(message, HttpStatus.UNAUTHORIZED.value());
+    public static HttpException badRequest(String message) {
+        return new HttpException(message, HttpStatus.BAD_REQUEST.value());
     }
 
     private HttpException(String message, int httpStatusCode) {

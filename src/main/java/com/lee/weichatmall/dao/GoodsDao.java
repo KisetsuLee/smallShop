@@ -22,4 +22,6 @@ public interface GoodsDao {
     int getGoodsCounts(Long shopId);
 
     List<Goods> getGoods(Integer pageNum, Integer pageSize, Long shopId);
+
+    List<Goods> findGoodsByIds(List<Long> goodsIds);
 }
