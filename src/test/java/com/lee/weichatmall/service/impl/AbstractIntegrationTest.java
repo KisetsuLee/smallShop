@@ -80,6 +80,14 @@ public abstract class AbstractIntegrationTest {
         return request;
     }
 
+    String getMessageFromResponse(String responseJsonString) {
+        return JSON.parseObject(responseJsonString).getObject("message", String.class);
+    }
+
+    <T> T getDataFromResponse(String responseJsonString, Class<T> clazz) {
+        return JSON.parseObject(responseJsonString).getObject("data", clazz);
+    }
+
     private void executeCleanAndMigrateBeforeEachTest(String url, String username, String password) {
         ClassicConfiguration classicConfiguration = new ClassicConfiguration();
         classicConfiguration.setDataSource(url, username, password);

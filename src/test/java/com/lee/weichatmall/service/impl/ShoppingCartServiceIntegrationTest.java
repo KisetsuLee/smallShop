@@ -1,10 +1,7 @@
 package com.lee.weichatmall.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.lee.weichatmall.WeichatmallApplication;
-import com.lee.weichatmall.domain.responesesEntity.Response;
 import com.lee.weichatmall.domain.shoppingCart.GoodsToShoppingCartItem;
 import com.lee.weichatmall.domain.shoppingCart.GoodsToShoppingCartList;
 import com.lee.weichatmall.domain.shoppingCart.ShoppingCartGoodsWithShop;
@@ -32,20 +29,20 @@ class ShoppingCartServiceIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void addGoodsToShoppingCartTest() {
+    void addGoodsToShoppingCartSucceedTest() {
         GoodsToShoppingCartList goodsToShoppingCartList = new GoodsToShoppingCartList();
         GoodsToShoppingCartItem goodsToShoppingCartItem1 = new GoodsToShoppingCartItem(3L, 10);
         List<GoodsToShoppingCartItem> goodsItems = new ArrayList<>();
         goodsItems.add(goodsToShoppingCartItem1);
         goodsToShoppingCartList.setGoods(goodsItems);
+
         HttpRequest request = sendRequest("/api/shoppingCart", goodsToShoppingCartList, false, COOKIE);
         Assertions.assertEquals(request.code(), HttpStatus.OK.value());
 
         String body = request.body();
-        Response<ShoppingCartGoodsWithShop> shoppingCartGoodsWithShopResponse =
-                JSON.parseObject(body, new TypeReference<Response<ShoppingCartGoodsWithShop>>() {
-                });
-        ShoppingCartGoodsWithShop data = shoppingCartGoodsWithShopResponse.getData();
+        String message = getMessageFromResponse(body);
+        ShoppingCartGoodsWithShop data = getDataFromResponse(body, ShoppingCartGoodsWithShop.class);
+        Assertions.assertNull(message);
         Assertions.assertEquals(1L, data.getShop().getId());
     }
 
