@@ -2,6 +2,7 @@ package com.lee.weichatmall.service.impl;
 
 import com.lee.weichatmall.dao.GoodsDao;
 import com.lee.weichatmall.dao.ShoppingCartDao;
+import com.lee.weichatmall.dao.mapper.ShoppingCartQueryMapper;
 import com.lee.weichatmall.domain.Goods;
 import com.lee.weichatmall.domain.ShoppingCart;
 import com.lee.weichatmall.domain.User;
@@ -26,15 +27,18 @@ import java.util.stream.Collectors;
  * Date: 2020-04-19
  * Time: 20:00
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartDao shoppingCartDao;
     private GoodsDao goodsDao;
+    private ShoppingCartQueryMapper shoppingCartQueryMapper;
 
     @Autowired
-    public ShoppingCartServiceImpl(ShoppingCartDao shoppingCartDao, GoodsDao goodsDao) {
+    public ShoppingCartServiceImpl(ShoppingCartDao shoppingCartDao, GoodsDao goodsDao, ShoppingCartQueryMapper shoppingCartQueryMapper) {
         this.shoppingCartDao = shoppingCartDao;
         this.goodsDao = goodsDao;
+        this.shoppingCartQueryMapper = shoppingCartQueryMapper;
     }
 
     @Override
@@ -60,6 +64,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .collect(Collectors.toList());
         shoppingCartDao.addGoodsToShoppingCart(shoppingCartRows, UserContext.getCurrentUser().getId());
         return shoppingCartDao.queryShoppingCartByShopAndUser(goods.get(0).getShopId(), UserContext.getCurrentUser().getId());
+    }
+
+    @Override
+    public List<ShoppingCartGoodsWithShop> getUserShoppingCartByShopPage(int pageNum, int pageSize) {
+        if (pageNum < 1 || pageSize < 1) {
+            throw HttpException.badRequest("页码参数不正确");
+        }
+        return shoppingCartQueryMapper.queryAllShoppingCartByShopAndUserAndPage((pageNum - 1) * pageSize,
+                pageSize, UserContext.getCurrentUser().getId());
+    }
+
+    @Override
+    public int getUserShoppingCartShopCount() {
+        return shoppingCartQueryMapper.queryShoppingCartShopCountByUser(UserContext.getCurrentUser().getId());
     }
 
     private ShoppingCart convertToShoppingCartItemRow(GoodsToShoppingCartItem goodsItem, long shopId, User user) {

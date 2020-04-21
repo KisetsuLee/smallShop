@@ -18,4 +18,5 @@ public class ShoppingCartGoods extends Goods {
     public void setNumber(int number) {
         this.number = number;
     }
+
 }

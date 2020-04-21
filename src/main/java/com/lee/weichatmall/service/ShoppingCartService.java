@@ -3,6 +3,8 @@ package com.lee.weichatmall.service;
 import com.lee.weichatmall.domain.shoppingCart.GoodsToShoppingCartList;
 import com.lee.weichatmall.domain.shoppingCart.ShoppingCartGoodsWithShop;
 
+import java.util.List;
+
 /**
  * Description:
  * User: Lzj
@@ -11,4 +13,8 @@ import com.lee.weichatmall.domain.shoppingCart.ShoppingCartGoodsWithShop;
  */
 public interface ShoppingCartService {
     ShoppingCartGoodsWithShop addShoppingCart(GoodsToShoppingCartList goodsToShoppingCart);
+
+    List<ShoppingCartGoodsWithShop> getUserShoppingCartByShopPage(int pageNum, int pageSize);
+
+    int getUserShoppingCartShopCount();
 }

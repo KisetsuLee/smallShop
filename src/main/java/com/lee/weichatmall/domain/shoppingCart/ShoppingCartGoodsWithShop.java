@@ -11,25 +11,15 @@ import java.util.List;
  * Time: 20:03
  */
 public class ShoppingCartGoodsWithShop {
-    private long shopId;
     private Shop shop;
     private List<ShoppingCartGoods> goods;
 
     public ShoppingCartGoodsWithShop() {
     }
 
-    public ShoppingCartGoodsWithShop(long shopId, Shop shop, List<ShoppingCartGoods> goods) {
-        this.shopId = shopId;
+    public ShoppingCartGoodsWithShop(Shop shop, List<ShoppingCartGoods> goods) {
         this.shop = shop;
         this.goods = goods;
-    }
-
-    public long getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(long shopId) {
-        this.shopId = shopId;
     }
 
     public Shop getShop() {
@@ -46,5 +36,13 @@ public class ShoppingCartGoodsWithShop {
 
     public void setGoods(List<ShoppingCartGoods> goods) {
         this.goods = goods;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingCartGoodsWithShop{" +
+                "shop=" + shop +
+                ", goods=" + goods +
+                '}';
     }
 }

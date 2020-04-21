@@ -1,5 +1,6 @@
 package com.lee.weichatmall.controller;
 
+import com.lee.weichatmall.domain.responesesEntity.PageResponse;
 import com.lee.weichatmall.domain.responesesEntity.Response;
 import com.lee.weichatmall.domain.shoppingCart.GoodsToShoppingCartList;
 import com.lee.weichatmall.domain.shoppingCart.ShoppingCartGoodsWithShop;
@@ -77,8 +78,18 @@ public class ShoppingCartController {
      * }
      */
     // @formatter:on
-    @GetMapping("shoppingCart ")
-    public void getShoppingCart() {
+    @GetMapping("shoppingCart")
+    public PageResponse<ShoppingCartGoodsWithShop> getShoppingCart(@RequestParam int pageNum,
+                                                                   @RequestParam int pageSize,
+                                                                   HttpServletResponse response) {
+        try {
+            return PageResponse.newInstance(pageNum, pageSize,
+                    shoppingCartService.getUserShoppingCartByShopPage(pageNum, pageSize),
+                    shoppingCartService.getUserShoppingCartShopCount());
+        } catch (HttpException e) {
+            response.setStatus(e.getHttpStatusCode());
+            return PageResponse.newInstance(0, 0, null, 0);
+        }
     }
 
     // @formatter:off

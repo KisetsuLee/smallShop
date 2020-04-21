@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lee.weichatmall.dao.mapper.ShoppingCartQueryMapper">
+    <select id="queryShoppingCartShopCountByUser" resultType="int" parameterType="long">
+        SELECT count(1) TOTAL_PAGE FROM (SELECT DISTINCT SHOP_ID from SHOPPING_CART WHERE USER_ID = #{userId}) TMP
+    </select>
+    <select id="queryAllShoppingCartByShopAndUserAndPage" resultMap="ShoppingCartGoodsWithShop" parameterType="Map">
+        SELECT s.ID            SHOP_ID,
+               s.`NAME`        SHOP_NAME,
+               s.DESCRIPTION   SHOP_DESCRIPTION,
+               s.IMG_URL       SHOP_IMG_URL,
+               s.OWNER_USER_ID SHOP_OWNER_USER_ID,
+               s.CREATED_AT    SHOP_CREATED_AT,
+               s.UPDATED_AT    SHOP_UPDATED_AT,
+               g.ID            GOODS_ID,
+               g.`NAME`        GOODS_NAME,
+               g.DESCRIPTION   GOODS_DESCRIPTION,
+               g.DETAILS       GOODS_DETAILS,
+               g.IMG_URL       GOODS_IMG_URL,
+               g.PRICE         GOODS_PRICE,
+               sc.`STATUS`     GOODS_STATUS,
+               sc.CREATED_AT   GOODS_CREATED_AT,
+               sc.UPDATED_AT   GOODS_UPDATED_AT,
+               sc.NUMBER       GOODS_NUMBER
+        FROM (SELECT DISTINCT SHOP_ID
+              FROM SHOPPING_CART
+              WHERE USER_ID = #{userId} LIMIT #{offset}, #{limit} ) t1
+                  INNER JOIN SHOPPING_CART sc
+              on t1.SHOP_ID = sc.SHOP_ID
+                  INNER JOIN SHOP s ON s.id = sc.SHOP_ID
+                  INNER JOIN GOODS g ON g.id = sc.GOODS_ID
+              ORDER BY
+                  sc.UPDATED_AT DESC;
+    </select>
     <select id="queryShoppingCartByShopAndUser" resultMap="ShoppingCartGoodsWithShop" parameterType="Map">
         SELECT SHOP.ID              as SHOP_ID,
                SHOP.NAME            as SHOP_NAME,
@@ -26,7 +57,8 @@
           AND SHOPPING_CART.USER_ID = #{userId}
     </select>
     <resultMap id="ShoppingCartGoodsWithShop" type="com.lee.weichatmall.domain.shoppingCart.ShoppingCartGoodsWithShop">
-        <id property="shopId" column="SHOP_ID"/>
+        <!-- 用于识别主键，方便分组 -->
+        <id column="SHOP_ID"/>
         <association property="shop" javaType="com.lee.weichatmall.domain.Shop">
             <id property="id" column="SHOP_ID"/>
             <result property="name" column="SHOP_NAME"/>
@@ -49,6 +81,12 @@
             <result property="createdAt" column="GOODS_CREATED_AT"/>
             <result property="updatedAt" column="GOODS_UPDATED_AT"/>
             <result property="status" column="GOODS_STATUS"/>
+        </collection>
+    </resultMap>
+    <resultMap id="ShoppingCartGoodsWithAllShop" type="com.lee.weichatmall.domain.shoppingCart.ShoppingCartGoodsWithAllShop">
+        <collection property="allShoppingCartGoods"
+                    ofType="com.lee.weichatmall.domain.shoppingCart.ShoppingCartGoodsWithShop"
+                    resultMap="ShoppingCartGoodsWithShop">
         </collection>
     </resultMap>
 

@@ -1,5 +1,6 @@
 package com.lee.weichatmall.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.lee.weichatmall.WeichatmallApplication;
 import com.lee.weichatmall.domain.shoppingCart.GoodsToShoppingCartItem;
@@ -46,4 +47,15 @@ class ShoppingCartServiceIntegrationTest extends AbstractIntegrationTest {
         Assertions.assertEquals(1L, data.getShop().getId());
     }
 
+    @Test
+    void queryAllShoppingCartShopCountSucceedTest() {
+        HttpRequest request = sendRequest("/api/shoppingCart?pageNum=1&pageSize=2", null, true, COOKIE);
+        String body = request.body();
+        List<ShoppingCartGoodsWithShop> shoppingCartList = JSON.parseObject(body).getJSONArray("data").toJavaList(ShoppingCartGoodsWithShop.class);
+        Assertions.assertEquals(2, shoppingCartList.size());
+        HttpRequest request1 = sendRequest("/api/shoppingCart?pageNum=1&pageSize=1", null, true, COOKIE);
+        String body1 = request1.body();
+        List<ShoppingCartGoodsWithShop> shoppingCartList1 = JSON.parseObject(body1).getJSONArray("data").toJavaList(ShoppingCartGoodsWithShop.class);
+        Assertions.assertEquals(1, shoppingCartList1.size());
+    }
 }

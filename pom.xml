@@ -43,10 +43,10 @@
         <my.mysql.driver>com.mysql.cj.jdbc.Driver</my.mysql.driver>
         <my.mysql.username>root</my.mysql.username>
         <my.mysql.password>123456</my.mysql.password>
-        <my.mysql.url>jdbc:mysql://172.16.14.195:3306/weiShop?characterEncoding=utf-8</my.mysql.url>
-        <my.mysql.test.url>jdbc:mysql://172.16.14.195:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>
-        <!--        <my.mysql.url>jdbc:mysql://192.168.18.210:3306/weiShop?characterEncoding=utf-8</my.mysql.url>-->
-        <!--        <my.mysql.test.url>jdbc:mysql://192.168.18.210:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>-->
+        <!--        <my.mysql.url>jdbc:mysql://172.16.14.195:3306/weiShop?characterEncoding=utf-8</my.mysql.url>-->
+        <!--        <my.mysql.test.url>jdbc:mysql://172.16.14.195:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>-->
+        <my.mysql.url>jdbc:mysql://192.168.18.210:3306/weiShop?characterEncoding=utf-8</my.mysql.url>
+        <my.mysql.test.url>jdbc:mysql://192.168.18.210:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>
         <powermock.version>2.0.2</powermock.version>
     </properties>
 
