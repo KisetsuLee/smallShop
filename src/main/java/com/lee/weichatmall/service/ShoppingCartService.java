@@ -17,4 +17,6 @@ public interface ShoppingCartService {
     List<ShoppingCartGoodsWithShop> getUserShoppingCartByShopPage(int pageNum, int pageSize);
 
     int getUserShoppingCartShopCount();
+
+    ShoppingCartGoodsWithShop deleteShoppingCartGoodsById(long goodsId);
 }

@@ -80,6 +80,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartQueryMapper.queryShoppingCartShopCountByUser(UserContext.getCurrentUser().getId());
     }
 
+    @Override
+    public ShoppingCartGoodsWithShop deleteShoppingCartGoodsById(long goodsId) {
+        Goods goodsById = goodsDao.findGoodsById(goodsId);
+        if (goodsById == null) {
+            throw HttpException.badRequest("传入的商品id不对");
+        }
+        shoppingCartDao.deleteShoppingCartGoodsById(goodsId);
+        return shoppingCartQueryMapper.queryShoppingCartByShopAndUser(goodsById.getShopId(), UserContext.getCurrentUser().getId());
+    }
+
     private ShoppingCart convertToShoppingCartItemRow(GoodsToShoppingCartItem goodsItem, long shopId, User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setGoodsId(goodsItem.getId());

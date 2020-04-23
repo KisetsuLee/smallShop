@@ -58,4 +58,15 @@ class ShoppingCartServiceIntegrationTest extends AbstractIntegrationTest {
         List<ShoppingCartGoodsWithShop> shoppingCartList1 = JSON.parseObject(body1).getJSONArray("data").toJavaList(ShoppingCartGoodsWithShop.class);
         Assertions.assertEquals(1, shoppingCartList1.size());
     }
+
+    @Test
+    void deleteShoppingCartGoods() {
+        addGoodsToShoppingCartSucceedTest();
+        HttpRequest request = sendDeleteRequest("/api/shoppingCart/1", null, COOKIE);
+        String body = request.body();
+        String message = getMessageFromResponse(body);
+        ShoppingCartGoodsWithShop data = getDataFromResponse(body, ShoppingCartGoodsWithShop.class);
+        Assertions.assertNull(message);
+        Assertions.assertEquals(1, data.getGoods().size());
+    }
 }

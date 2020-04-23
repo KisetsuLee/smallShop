@@ -77,6 +77,12 @@ public class ShoppingCartController {
      * "message": "Unauthorized"
      * }
      */
+    /**
+     * @param pageNum
+     * @param pageSize
+     * @param response
+     * @return 返回所有购物车列表，以shop分页
+     */
     // @formatter:on
     @GetMapping("shoppingCart")
     public PageResponse<ShoppingCartGoodsWithShop> getShoppingCart(@RequestParam int pageNum,
@@ -219,7 +225,20 @@ public class ShoppingCartController {
      * "message": "Unauthorized"
      * }
      */
+    /**
+     *
+     * @param goodsId
+     * @param response
+     * @return 返回删除后此店铺在购物车的商品
+     */
     // @formatter:on
-    public void deleteShoppingCart() {
+    @DeleteMapping("shoppingCart/{goodsId}")
+    public Response<ShoppingCartGoodsWithShop> deleteShoppingCart(@PathVariable("goodsId") long goodsId, HttpServletResponse response) {
+        try {
+            return Response.of(shoppingCartService.deleteShoppingCartGoodsById(goodsId));
+        } catch (HttpException e) {
+            response.setStatus(e.getHttpStatusCode());
+            return Response.of(e.getMessage(), null);
+        }
     }
 }

@@ -80,6 +80,14 @@ public abstract class AbstractIntegrationTest {
         return request;
     }
 
+    <T> HttpRequest sendDeleteRequest(String url, T requestBody, String cookie) {
+        return HttpRequest.delete(getUrl(url))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Cookie", cookie)
+                .acceptJson()
+                .send(JSON.toJSONString(requestBody));
+    }
+
     String getMessageFromResponse(String responseJsonString) {
         return JSON.parseObject(responseJsonString).getObject("message", String.class);
     }

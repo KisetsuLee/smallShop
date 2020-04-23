@@ -24,7 +24,7 @@
                sc.NUMBER       GOODS_NUMBER
         FROM (SELECT DISTINCT SHOP_ID
               FROM SHOPPING_CART
-              WHERE USER_ID = #{userId} LIMIT #{offset}, #{limit} ) t1
+              WHERE USER_ID = #{userId} AND `STATUS` = 'ok' LIMIT #{offset}, #{limit} ) t1
                   INNER JOIN SHOPPING_CART sc
               on t1.SHOP_ID = sc.SHOP_ID
                   INNER JOIN SHOP s ON s.id = sc.SHOP_ID
@@ -55,6 +55,7 @@
                  JOIN SHOP on SHOPPING_CART.SHOP_ID = SHOP.ID
         WHERE SHOPPING_CART.SHOP_ID = #{shopId}
           AND SHOPPING_CART.USER_ID = #{userId}
+          AND SHOPPING_CART.STATUS = 'ok'
     </select>
     <resultMap id="ShoppingCartGoodsWithShop" type="com.lee.weichatmall.domain.shoppingCart.ShoppingCartGoodsWithShop">
         <!-- 用于识别主键，方便分组 -->

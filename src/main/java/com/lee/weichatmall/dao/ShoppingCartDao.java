@@ -15,4 +15,6 @@ public interface ShoppingCartDao {
     void addGoodsToShoppingCart(List<ShoppingCart> shoppingCartRows, long userId);
 
     ShoppingCartGoodsWithShop queryShoppingCartByShopAndUser(long shopId, long userId);
+
+    void deleteShoppingCartGoodsById(long goodsId);
 }
