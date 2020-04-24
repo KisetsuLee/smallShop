@@ -5,11 +5,11 @@ import com.lee.weichatmall.config.interceptor.UserLoginInterceptor;
 import com.lee.weichatmall.domain.auth.ShiroRealm;
 import com.lee.weichatmall.service.UserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.RedisCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,10 +59,10 @@ public class ShiroConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public SecurityManager securityManager(ShiroRealm shiroRealm) {
+    public SecurityManager securityManager(ShiroRealm shiroRealm, RedisCacheManager cacheManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm); // 配置realm规则
-        securityManager.setCacheManager(new MemoryConstrainedCacheManager());
+        securityManager.setCacheManager(cacheManager);
         securityManager.setSessionManager(new DefaultWebSessionManager());
         SecurityUtils.setSecurityManager(securityManager); // 配置securityManager
         return securityManager;

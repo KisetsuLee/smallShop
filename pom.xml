@@ -47,6 +47,10 @@
         <my.mysql.test.url>jdbc:mysql://172.16.14.195:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>
         <!--        <my.mysql.url>jdbc:mysql://192.168.18.210:3306/weiShop?characterEncoding=utf-8</my.mysql.url>-->
         <!--        <my.mysql.test.url>jdbc:mysql://192.168.18.210:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>-->
+        <my.redis.url>172.16.14.195</my.redis.url>
+        <my.redis.port>6379</my.redis.port>
+        <my.redis.test.url>172.16.14.195</my.redis.test.url>
+        <my.redis.test.port>6379</my.redis.test.port>
         <powermock.version>2.0.2</powermock.version>
     </properties>
 
@@ -90,6 +94,15 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>3.2.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

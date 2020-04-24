@@ -4,5 +4,9 @@ spring:
     username: ${my.mysql.username}
     password: ${my.mysql.password}
     driver-class-name: ${my.mysql.driver}
+  redis:
+    host: ${my.redis.test.url}
+    port: ${my.redis.test.port}
 mybatis:
   config-location: classpath:db/mybatis/config.xml
+
