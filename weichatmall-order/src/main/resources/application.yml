@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: weichatmall-registry-zookeeper-provider
+#  datasource:
+#    url: ${my.mysql.order.url}
+#    username: ${my.mysql.username}
+#    password: ${my.mysql.password}
+#    driver-class-name: ${my.mysql.driver}
+#  redis:
+#    host: ${my.redis.url}
+#    port: ${my.redis.port}
+mybatis:
+  config-location: classpath:db/mybatis/config.xml
+server:
+  port: 8081
+
+# 自定义版本号
+weichatmall:
+  service:
+    version: 1.0.0
+
+# dubbo配置
+dubbo:
+  scan:
+    base-packages: com.lee.weichatmall.service.impl
+  registry:
+    address: zookeeper://${my.zookeeper.url}:${my.zookeeper.port}
+    # file: ${user.home}/dubbo-cache/${spring.application.name}/dubbo.cache
