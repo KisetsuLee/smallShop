@@ -49,6 +49,7 @@
     <properties>
         <java.version>1.8</java.version>
         <my.service.url>172.16.12.150</my.service.url>
+        <!--        <my.service.url>192.168.31.116</my.service.url>-->
         <my.mysql.driver>com.mysql.cj.jdbc.Driver</my.mysql.driver>
         <my.mysql.username>root</my.mysql.username>
         <my.mysql.password>123456</my.mysql.password>
