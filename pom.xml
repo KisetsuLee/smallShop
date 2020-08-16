@@ -48,15 +48,15 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <my.service.url>172.16.12.150</my.service.url>
+        <my.service.url>192.168.0.201</my.service.url>
         <!--        <my.service.url>192.168.31.116</my.service.url>-->
         <my.mysql.driver>com.mysql.cj.jdbc.Driver</my.mysql.driver>
         <my.mysql.username>root</my.mysql.username>
         <my.mysql.password>123456</my.mysql.password>
         <my.mysql.url>jdbc:mysql://${my.service.url}:3306/weiShop?characterEncoding=utf-8</my.mysql.url>
-        <my.mysql.test.url>jdbc:mysql://${my.service.url}:3307/weiShop?characterEncoding=utf-8</my.mysql.test.url>
+        <my.mysql.test.url>jdbc:mysql://${my.service.url}:3306/weiShop?characterEncoding=utf-8</my.mysql.test.url>
         <my.mysql.order.url>jdbc:mysql://${my.service.url}:3306/weiOrder?characterEncoding=utf-8</my.mysql.order.url>
-        <my.mysql.order.test.url>jdbc:mysql://${my.service.url}:3307/weiOrder?characterEncoding=utf-8</my.mysql.order.test.url>
+        <my.mysql.order.test.url>jdbc:mysql://${my.service.url}:3306/weiOrder?characterEncoding=utf-8</my.mysql.order.test.url>
         <my.redis.url>${my.service.url}</my.redis.url>
         <my.redis.port>6379</my.redis.port>
         <my.redis.test.url>${my.service.url}</my.redis.test.url>
